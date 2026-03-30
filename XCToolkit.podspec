@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'XCToolkit'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'A lightweight Swift toolkit for iOS development'
   s.description      = <<-DESC
 XCToolkit is a modular, lightweight Swift toolkit designed to simplify iOS development.
