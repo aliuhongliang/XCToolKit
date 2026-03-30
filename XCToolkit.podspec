@@ -23,12 +23,12 @@ Includes foundation extensions, logging, and storage utilities.
   end
 
   s.subspec 'XCLogger' do |ss|
-    ss.dependency 'XCToolkit/TKFoundation'
+    ss.dependency 'XCToolkit/XCFoundation'
     ss.source_files = 'Sources/XCLogger/**/*.{swift,h,m}'
   end
 
   s.subspec 'XCStorage' do |ss|
-    ss.dependency 'XCToolkit/TKFoundation'
+    ss.dependency 'XCToolkit/XCFoundation'
     ss.source_files = 'Sources/XCStorage/**/*.{swift,h,m}'
   end
 end
