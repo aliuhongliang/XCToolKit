@@ -7,7 +7,7 @@ XCToolkit is a modular, lightweight Swift toolkit designed to simplify iOS devel
 Includes foundation extensions, logging, and storage utilities.
                        DESC
 
-  s.homepage         = 'https://github.com/yourname/MyToolkit'
+  s.homepage         = 'https://github.com/aliuhongliang/XCToolkit'  # 改成真实仓库
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'XiChuan' => '617745514@qq.com' }
 
@@ -18,18 +18,17 @@ Includes foundation extensions, logging, and storage utilities.
 
   # MARK: - Subspecs
 
-  s.subspec 'Foundation' do |ss|
-    ss.source_files = 'Sources/XCFoundation/**/*'
+  s.subspec 'TKFoundation' do |ss|
+    ss.source_files = 'Sources/XCFoundation/**/*.{swift,h,m}'
   end
 
-  s.subspec 'Logger' do |ss|
-    ss.dependency 'XCToolkit/Foundation'
-    ss.source_files = 'Sources/XCLogger/**/*'
+  s.subspec 'TKLogger' do |ss|
+    ss.dependency 'XCToolkit/TKFoundation'
+    ss.source_files = 'Sources/XCLogger/**/*.{swift,h,m}'
   end
 
-  s.subspec 'Storage' do |ss|
-    ss.dependency 'XCToolkit/Foundation'
-    ss.source_files = 'Sources/XCStorage/**/*'
+  s.subspec 'TKStorage' do |ss|
+    ss.dependency 'XCToolkit/TKFoundation'
+    ss.source_files = 'Sources/XCStorage/**/*.{swift,h,m}'
   end
-
 end
