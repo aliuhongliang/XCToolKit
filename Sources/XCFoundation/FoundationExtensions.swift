@@ -8,10 +8,14 @@ public extension String {
     var toInt: Int? {
         Int(self)
     }
+    var toDouble: Int? {
+        Int(self)
+    }
 }
 
 public extension Array {
     subscript(safe index: Int) -> Element? {
         return indices.contains(index) ? self[index] : nil
     }
+    
 }
