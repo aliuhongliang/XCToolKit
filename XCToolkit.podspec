@@ -18,17 +18,17 @@ Includes foundation extensions, logging, and storage utilities.
 
   # MARK: - Subspecs
 
-  s.subspec 'TKFoundation' do |ss|
-    ss.source_files = 'Sources/XCFoundation/*.{swift,h,m}'
+  s.subspec 'XCFoundation' do |ss|
+    ss.source_files = 'Sources/XCFoundation/**/*.{swift,h,m}'
   end
 
-  s.subspec 'TKLogger' do |ss|
+  s.subspec 'XCLogger' do |ss|
     ss.dependency 'XCToolkit/TKFoundation'
-    ss.source_files = 'Sources/XCLogger/*.{swift,h,m}'
+    ss.source_files = 'Sources/XCLogger/**/*.{swift,h,m}'
   end
 
-  s.subspec 'TKStorage' do |ss|
+  s.subspec 'XCStorage' do |ss|
     ss.dependency 'XCToolkit/TKFoundation'
-    ss.source_files = 'Sources/XCStorage/*.{swift,h,m}'
+    ss.source_files = 'Sources/XCStorage/**/*.{swift,h,m}'
   end
 end
