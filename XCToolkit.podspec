@@ -14,7 +14,7 @@ Includes foundation extensions, logging, and storage utilities.
   s.platform         = :ios, '13.0'
   s.swift_version    = '5.9'
 
-  s.source           = { :git => 'https://github.com/yourname/XCToolkit.git', :tag => s.version }
+  s.source           = { :git => 'https://github.com/aliuhongliang/XCToolkit.git', :tag => s.version }
 
   # MARK: - Subspecs
 
