@@ -136,6 +136,7 @@ public extension UIFont {
     }
 
     /// 等宽字体变体（适合数字对齐，如直播计数器）
+    @available(iOS 15.0, *)
     func monospaced() -> UIFont {
         let features: [[UIFontDescriptor.FeatureKey: Int]] = [[
             .type:     kNumberSpacingType,
@@ -187,7 +188,7 @@ public extension UIFont {
             style.minimumLineHeight = lh
             style.maximumLineHeight = lh
             // 垂直居中补偿
-            let offset = (lh - lineHeight) / 4
+            let offset = (lh - self.lineHeight) / 4
             attrs[.baselineOffset] = offset
         }
         attrs[.paragraphStyle] = style

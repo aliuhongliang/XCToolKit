@@ -13,12 +13,6 @@ import XCExtensions
 
 open class BaseTabBarViewController: UITabBarController {
     
-    var navigationBarHidden: Bool {
-        get {
-            true
-        }
-    }
-    
     open override func viewDidLoad() {
         super.viewDidLoad()
         
