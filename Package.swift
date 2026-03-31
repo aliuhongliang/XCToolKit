@@ -9,6 +9,8 @@ let package = Package(
     ],
     products: [
         .library(name: "XCToolkit", targets: ["XCToolkit"]),
+        .library(name: "XCNetwork", targets: ["XCNetwork"]),
+        .library(name: "XCCrypto", targets: ["XCCrypto"]),
     ],
     dependencies: [
         // 只有核心 Target 需要依赖时才引入

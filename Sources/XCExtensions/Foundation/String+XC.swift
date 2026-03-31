@@ -5,6 +5,7 @@ import UIKit
 import XCCore
 #endif
 
+
 public extension String {
     var xc_isPhoneNumber: Bool { RegexValidator.isPhoneNumber(self) }
     var xc_isEmail: Bool { RegexValidator.isEmail(self) }

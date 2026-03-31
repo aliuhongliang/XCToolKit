@@ -21,7 +21,6 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/aliuhongliang/XCToolkit.git', :tag => s.version }
 
   # 👇 👇 👇 【关键修复 1】必须加这个！解决模块找不到！
-  s.user_target_xcconfig = { 'OTHER_SWIFT_FLAGS' => '-Xfrontend -no-abi-long-term-stability-version-5-5' }
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
 
   # MARK: - Subspecs

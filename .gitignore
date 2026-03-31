@@ -8,6 +8,7 @@ DerivedData/
 project.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 *.xcodeproj/project.xcworkspace/
+*xcuserdata*
 # 如果你提交 .xcodeproj，请保留 project.pbxproj，但忽略个人布局
 
 # --- Swift Package Manager ---
