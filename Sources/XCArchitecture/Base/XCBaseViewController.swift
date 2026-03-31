@@ -1,5 +1,7 @@
 import UIKit
+#if canImport(XCCore)
 import XCCore
+#endif
 
 open class BaseViewController: UIViewController {
     open override func viewDidLoad() {

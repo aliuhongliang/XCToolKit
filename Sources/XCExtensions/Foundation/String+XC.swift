@@ -1,7 +1,9 @@
 import CoreGraphics
 import Foundation
 import UIKit
+#if canImport(XCCore)
 import XCCore
+#endif
 
 public extension String {
     var xc_isPhoneNumber: Bool { RegexValidator.isPhoneNumber(self) }
