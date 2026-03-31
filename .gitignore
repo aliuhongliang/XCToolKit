@@ -1,0 +1,45 @@
+# --- Swift / Xcode ---
+# 忽略 Xcode 索引、缓存和个人设置
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/
+# 如果你提交 .xcodeproj，请保留 project.pbxproj，但忽略个人布局
+
+# --- Swift Package Manager ---
+# 忽略 SPM 的编译缓存和下载的依赖库
+.build/
+.swiftpm/
+Package.resolved
+
+# --- CocoaPods ---
+# 忽略 Pods 目录（通常不建议将三方库源码提交到 Git）
+Pods/
+# 如果你希望其他人 clone 后直接能跑，可以不忽略 Podfile.lock
+# 但通常建议忽略它，由使用者自行 pod install
+# Podfile.lock
+
+# --- macOS ---
+# 忽略系统自动生成的索引文件
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# --- 个人配置 & 代理 ---
+# 忽略本地的环境变量或终端代理配置（防止泄露个人路径）
+.env
+*.local
+.vscode/
+
+# --- 编译产物 ---
+*.swp
+*.lock
+*.mode1v3
+*.mode2v3
+*.perspectivev3

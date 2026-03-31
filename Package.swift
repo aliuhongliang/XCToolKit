@@ -1,43 +1,44 @@
-
-// swift-tools-version:5.9
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
     name: "XCToolkit",
+//    defaultLocalization: "en",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v13) // 考虑到暗黑模式和现代 UI 组件
     ],
     products: [
-        .library(name: "XCFoundation", targets: ["XCFoundation"]),
-        .library(name: "XCLogger", targets: ["XCLogger"]),
-        .library(name: "XCStorage", targets: ["XCStorage"]),
+        .library(name: "XCToolkit", targets: ["XCToolkit"]),
+    ],
+    dependencies: [
+        // 只有核心 Target 需要依赖时才引入
+        .package(url: "https://github.com/Moya/Moya.git", .upToNextMajor(from: "15.0.0")),
+        .package(url: "https://github.com/daltoniam/Starscream.git", .upToNextMajor(from: "4.0.0")),
+        .package(url: "https://github.com/emqx/CocoaMQTT.git", .upToNextMajor(from: "2.1.0")),
+        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0"))
     ],
     targets: [
-        // MARK: - Core
         .target(
-            name: "XCFoundation",
-            path: "Sources/XCFoundation"
+            name: "XCToolkit",
+            dependencies: [
+                "XCCore", "XCExtensions", "XCArchitecture", "XCComponents"
+            ],
+            path: "Sources/Main"
         ),
-        
-        // MARK: - Logger
+        .target(name: "XCCore", path: "Sources/XCCore"),
+        .target(name: "XCExtensions", dependencies: ["XCCore"], path: "Sources/XCExtensions"),
+        .target(name: "XCComponents", dependencies: ["XCExtensions"], path: "Sources/XCComponents"),
+        .target(name: "XCArchitecture", dependencies: ["XCCore", "XCExtensions"], path: "Sources/XCArchitecture"),
+        // 涉及三方的独立模块
         .target(
-            name: "XCLogger",
-            dependencies: ["XCFoundation"],
-            path: "Sources/XCLogger"
+            name: "XCNetwork",
+            dependencies: ["Moya", "Starscream", "CocoaMQTT", "XCCore"],
+            path: "Sources/XCNetwork"
         ),
-        
-        // MARK: - Storage
         .target(
-            name: "XCStorage",
-            dependencies: ["XCFoundation"],
-            path: "Sources/XCStorage"
-        ),
-        
-        // MARK: - Tests
-//        .testTarget(
-//            name: "XCToolkitTests",
-//            dependencies: ["XCFoundation"],
-//            path: "Tests"
-//        )
+            name: "XCCrypto",
+            dependencies: ["CryptoSwift"],
+            path: "Sources/XCCrypto"
+        )
     ]
 )
