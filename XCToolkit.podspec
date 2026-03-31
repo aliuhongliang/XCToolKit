@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'XCToolkit'
-  s.version          = '0.1.1'
+  s.version          = '1.0.0'
   s.summary          = 'iOS 开发综合工具库，包含扩展、UI组件、网络封装及底层工具。'
   s.description      = <<-DESC
                        XCToolkit 是一个功能全面的 iOS 库，涵盖了：
