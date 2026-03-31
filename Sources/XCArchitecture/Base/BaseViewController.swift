@@ -262,20 +262,20 @@ extension BaseViewController {
             customNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             // 高度 = SafeArea top + 内容高度
             customNavBar.heightAnchor.constraint(
-                equalToConstant: customNavigationBarHeight + safeAreaTopInset()
+                equalToConstant: customNavigationBarHeight + DeviceScreen.safeAreaTop
             )
         ])
     }
  
-    private func safeAreaTopInset() -> CGFloat {
-        if #available(iOS 13.0, *) {
-            return view.window?.safeAreaInsets.top
-                ?? UIApplication.shared.windows.first?.safeAreaInsets.top
-                ?? 44
-        } else {
-            return UIApplication.shared.statusBarFrame.height
-        }
-    }
+//    private func safeAreaTopInset() -> CGFloat {
+//        if #available(iOS 13.0, *) {
+//            return view.window?.safeAreaInsets.top
+//                ?? UIApplication.shared.windows.first?.safeAreaInsets.top
+//                ?? 44
+//        } else {
+//            return UIApplication.shared.statusBarFrame.height
+//        }
+//    }
 }
  
 
