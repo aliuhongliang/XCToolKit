@@ -37,9 +37,12 @@
   - `UIView`: 尺寸、布局、阴影/圆角/边框共存、渐变。
   - `UIButton`: 图文布局、点击区域、状态样式管理。
   - `UILabel`: 行距字距、富文本快捷构建。
-  - `UIImage` / `UIImageView`: 裁剪、渲染、加载辅助。
+  - `UIImageView`: 裁剪、渲染、加载辅助。
+  - `UIImage`: 扩展。✅
   - `UITextField` / `UITextView`: placeholder、输入限制、光标处理。
-  - `UIColor` / `UIFont` / `UISlider` 等常用扩展。
+  - `UIColor`: 扩展。 ✅
+  - `UIFont` : 扩展。 ✅
+  - `UISlider`: 扩展。 
 - `Foundation`:
   - `String`: 校验、尺寸计算、子串安全访问、富文本构建。
   - `Date`: 格式化、时间差、时区处理。
@@ -50,11 +53,11 @@
 
 面向业务工程的“骨架能力”，降低项目初始化成本。
 
-- `Base`: `BaseViewController` / `BaseNavigationController` / `BaseTabBarController` / `BaseWebViewController`。
+- `Base`: `BaseViewController` / `BaseNavigationController` / `BaseTabBarController` / `BaseWebViewController`。 ✅
 - `Permission`: 相机、相册、定位、通知等权限申请封装。
 - `Theme`: 自定义主题 + 系统深浅色模式适配。
 - `Responder`: 当前顶层控制器、可见页面获取。
-- `Adapter`: 屏幕尺寸比例与安全区适配。
+- `Adapter`: 屏幕尺寸比例与安全区适配。      ✅
 - `Protocol`: 协议点击跳转、数据协议头管理。
 - `Transition`: 常见页面转场与动画管理。
 
