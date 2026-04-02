@@ -44,6 +44,7 @@ public enum XCECDSAKey {
         public var publicKeyBase64: String { publicKeyData.base64EncodedString() }
 
         /// 公钥 X9.63 压缩格式 Base64（33 字节）
+        @available(iOS 16.0, *)
         public var publicKeyCompressedBase64: String {
             publicKey.compressedRepresentation.base64EncodedString()
         }
@@ -75,6 +76,7 @@ public enum XCECDSAKey {
     }
 
     /// 从原始 Data（65 字节未压缩 / 33 字节压缩）导入公钥
+    @available(iOS 16.0, *)
     public static func importPublicKey(from data: Data) throws -> P256.Signing.PublicKey {
         do {
             return try P256.Signing.PublicKey(rawRepresentation: data)
@@ -89,6 +91,7 @@ public enum XCECDSAKey {
     }
 
     /// 从 Base64 字符串导入公钥
+    @available(iOS 16.0, *)
     public static func importPublicKey(base64: String) throws -> P256.Signing.PublicKey {
         guard let data = Data(base64Encoded: base64) else { throw ECDSAError.invalidKeyData }
         return try importPublicKey(from: data)

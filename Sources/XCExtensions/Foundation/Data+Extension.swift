@@ -141,37 +141,90 @@ public extension Data {
         _compression(operation: COMPRESSION_STREAM_DECODE, algorithm: algorithm)
     }
 
+//    private func _compression(
+//        operation: compression_stream_operation,
+//        algorithm: compression_algorithm
+//    ) -> Data? {
+//        guard !isEmpty else { return nil }
+//        let bufferSize = 64 * 1024
+//        var buffer = [UInt8](repeating: 0, count: bufferSize)
+//        var stream = compression_stream()
+//        guard compression_stream_init(&stream, operation, algorithm) == COMPRESSION_STATUS_OK else {
+//            return nil
+//        }
+//        defer { compression_stream_destroy(&stream) }
+//
+//        var result = Data()
+//        var inputData = self
+//        inputData.withUnsafeBytes { rawBuffer in
+//            stream.src_ptr = rawBuffer.bindMemory(to: UInt8.self).baseAddress!
+//            stream.src_size = inputData.count
+//        }
+//
+//        repeat {
+//            stream.dst_ptr = &buffer
+//            stream.dst_size = bufferSize
+//            let flags: Int32 = stream.src_size == 0 ? Int32(COMPRESSION_STREAM_FINALIZE.rawValue) : 0
+//            let status = compression_stream_process(&stream, flags)
+//            guard status != COMPRESSION_STATUS_ERROR else { return }
+//            let produced = bufferSize - stream.dst_size
+//            result.append(contentsOf: buffer[0..<produced])
+//        } while stream.src_size > 0 || stream.dst_size == 0
+//
+//        return result.isEmpty ? nil : result
+//    }
+    
     private func _compression(
         operation: compression_stream_operation,
         algorithm: compression_algorithm
     ) -> Data? {
         guard !isEmpty else { return nil }
+        
         let bufferSize = 64 * 1024
         var buffer = [UInt8](repeating: 0, count: bufferSize)
-        var stream = compression_stream()
+        
+        var stream = compression_stream(dst_ptr: UnsafeMutablePointer<UInt8>.allocate(capacity: 0), dst_size: 0, src_ptr: UnsafeMutablePointer<UInt8>.allocate(capacity: 0), src_size: 0, state: UnsafeMutablePointer<UInt8>.allocate(capacity: 0))
+        
         guard compression_stream_init(&stream, operation, algorithm) == COMPRESSION_STATUS_OK else {
             return nil
         }
         defer { compression_stream_destroy(&stream) }
 
         var result = Data()
-        var inputData = self
-        inputData.withUnsafeBytes { rawBuffer in
-            stream.src_ptr = rawBuffer.bindMemory(to: UInt8.self).baseAddress!
-            stream.src_size = inputData.count
+        
+        // 2. 确保在整个处理过程中输入数据的指针都是有效的
+        return self.withUnsafeBytes { rawBuffer -> Data? in
+            guard let srcBase = rawBuffer.bindMemory(to: UInt8.self).baseAddress else { return nil }
+            
+            stream.src_ptr = srcBase
+            stream.src_size = self.count
+            
+            while true {
+                // 3. 使用 withUnsafeMutableBufferPointer 安全地传递目标缓冲区指针
+                let status = buffer.withUnsafeMutableBufferPointer { bufferPtr -> compression_status in
+                    stream.dst_ptr = bufferPtr.baseAddress!
+                    stream.dst_size = bufferSize
+                    
+                    let flags = stream.src_size == 0 ? Int32(COMPRESSION_STREAM_FINALIZE.rawValue) : 0
+                    return compression_stream_process(&stream, flags)
+                }
+                
+                // 4. 处理返回状态
+                guard status != COMPRESSION_STATUS_ERROR else { return nil }
+                
+                let produced = bufferSize - stream.dst_size
+                if produced > 0 {
+                    result.append(buffer, count: produced)
+                }
+                
+                if status == COMPRESSION_STATUS_END {
+                    return result.isEmpty ? nil : result
+                } else if produced == 0 && stream.src_size == 0 {
+                    // 防止在某些边缘情况下出现死循环
+                    return result.isEmpty ? nil : result
+                }
+            }
         }
-
-        repeat {
-            stream.dst_ptr = &buffer
-            stream.dst_size = bufferSize
-            let flags: Int32 = stream.src_size == 0 ? Int32(COMPRESSION_STREAM_FINALIZE.rawValue) : 0
-            let status = compression_stream_process(&stream, flags)
-            guard status != COMPRESSION_STATUS_ERROR else { return }
-            let produced = bufferSize - stream.dst_size
-            result.append(contentsOf: buffer[0..<produced])
-        } while stream.src_size > 0 || stream.dst_size == 0
-
-        return result.isEmpty ? nil : result
     }
 
     // MARK: - 文件 I/O 类
