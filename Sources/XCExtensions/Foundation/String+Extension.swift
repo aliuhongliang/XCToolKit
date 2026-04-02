@@ -466,6 +466,42 @@ public extension String {
     }
 }
 
+
+public extension String {
+    /// 快速转换为可变富文本
+    var attributed: NSMutableAttributedString {
+        return NSMutableAttributedString(string: self)
+    }
+}
+
+// MARK: NSMutableAttributedString
+
+public extension NSMutableAttributedString {
+    /// 链式高亮方法：针对指定子串设置特定颜色和字体
+    func highlight(
+        _ target: String,
+        color: UIColor? = nil,
+        font: UIFont? = nil
+    ) -> NSMutableAttributedString {
+        let string = self.string
+        var searchRange = string.startIndex..<string.endIndex
+        
+        while let range = string.range(of: target, range: searchRange) {
+            let nsRange = NSRange(range, in: string)
+            
+            if let color = color {
+                self.addAttribute(.foregroundColor, value: color, range: nsRange)
+            }
+            if let font = font {
+                self.addAttribute(.font, value: font, range: nsRange)
+            }
+            
+            searchRange = range.upperBound..<string.endIndex
+        }
+        return self
+    }
+}
+
 // MARK: NSAttributedString + 运算符拼接
 
 public extension NSAttributedString {
@@ -475,6 +511,65 @@ public extension NSAttributedString {
         let result = NSMutableAttributedString(attributedString: lhs)
         result.append(rhs)
         return result
+    }
+    
+    /// String + att
+    static func + (lhs: String, rhs: NSAttributedString) -> NSAttributedString {
+        return NSAttributedString(string: lhs) + rhs
+    }
+    
+    /// att + String
+    static func + (lhs: NSAttributedString, rhs: String) -> NSAttributedString {
+        return lhs + NSAttributedString(string: rhs)
+    }
+}
+
+public extension NSAttributedString {
+    /// 转换为可变版本以便内部修改
+    var mutable: NSMutableAttributedString {
+        return NSMutableAttributedString(attributedString: self)
+    }
+    
+    /// 设置颜色
+    func color(_ color: UIColor) -> NSAttributedString {
+        let att = self.mutable
+        att.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: att.length))
+        return att
+    }
+    
+    /// 设置字体
+    func font(_ font: UIFont) -> NSAttributedString {
+        let att = self.mutable
+        att.addAttribute(.font, value: font, range: NSRange(location: 0, length: att.length))
+        return att
+    }
+    
+    /// 设置删除线
+    func strikethrough(_ style: NSUnderlineStyle = .single, color: UIColor? = nil) -> NSAttributedString {
+        let att = self.mutable
+        let range = NSRange(location: 0, length: att.length)
+        att.addAttribute(.strikethroughStyle, value: style.rawValue, range: range)
+        if let color = color {
+            att.addAttribute(.strikethroughColor, value: color, range: range)
+        }
+        return att
+    }
+    
+    /// 设置行间距 (作用于整个段落)
+    func lineSpacing(_ spacing: CGFloat) -> NSAttributedString {
+        let att = self.mutable
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineSpacing = spacing
+        att.addAttribute(.paragraphStyle, value: paragraph, range: NSRange(location: 0, length: att.length))
+        return att
+    }
+    
+    /// 插入图片 (静态工具方法)
+    static func image(_ image: UIImage, bounds: CGRect) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = image
+        attachment.bounds = bounds
+        return NSAttributedString(attachment: attachment)
     }
 }
 

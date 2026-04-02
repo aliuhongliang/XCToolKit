@@ -31,8 +31,6 @@
 
 ### 2) 扩展层 `XCExtensions` (System Enhancements)
 
-在不改变系统类语义的前提下，补足开发常见痛点。建议统一使用 `xc_` 前缀隔离命名。
-
 - `UIKit`:
   - `UIView`: 尺寸、布局、阴影/圆角/边框共存、渐变。✅
   - `UIButton`: 图文布局、点击区域、状态样式管理、快速创建。 ✅
@@ -41,10 +39,10 @@
   - `UITextField` / `UITextView`: placeholder、输入限制、光标处理。  ✅
   - `UIColor`: 扩展。 ✅
   - `UIFont` : 扩展。 ✅
-  - `UISlider`: 扩展。 
+  - `UISlider`: 扩展。 ✅
 - `Foundation`:
-  - `String`: 校验、尺寸计算、子串安全访问、富文本构建。
-  - `Date`: 格式化、时间差、时区处理。 Calendar
+  - `String`: 校验、尺寸计算、子串安全访问、富文本构建。 ✅
+  - `Date`: 格式化、时间差、时区处理。 Calendar ✅
   - `Data`: 编解码、哈希、进制转换桥接。
   - `Array` / `Dictionary`: 安全取值、防越界辅助。
 
