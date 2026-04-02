@@ -38,7 +38,7 @@ let package = Package(
         ),
         .target(
             name: "XCCrypto",
-            dependencies: ["CryptoSwift"],
+            dependencies: [],
             path: "Sources/XCCrypto",
             linkerSettings: [
                 .linkedFramework("Security")  // RSA 用到
