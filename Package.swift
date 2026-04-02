@@ -17,7 +17,6 @@ let package = Package(
         .package(url: "https://github.com/Moya/Moya.git", .upToNextMajor(from: "15.0.0")),
         .package(url: "https://github.com/daltoniam/Starscream.git", .upToNextMajor(from: "4.0.0")),
         .package(url: "https://github.com/emqx/CocoaMQTT.git", .upToNextMajor(from: "2.1.0")),
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.0"))
     ],
     targets: [
         .target(
@@ -40,7 +39,11 @@ let package = Package(
         .target(
             name: "XCCrypto",
             dependencies: ["CryptoSwift"],
-            path: "Sources/XCCrypto"
+            path: "Sources/XCCrypto",
+            linkerSettings: [
+                .linkedFramework("Security")  // RSA 用到
+                // CryptoKit、CommonCrypto 会自动链接，无需声明
+            ]
         )
     ]
 )
