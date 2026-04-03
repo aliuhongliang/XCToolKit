@@ -43,8 +43,8 @@
 - `Foundation`:
   - `String`: 校验、尺寸计算、子串安全访问、富文本构建。 ✅
   - `Date`: 格式化、时间差、时区处理。 Calendar ✅
-  - `Data`: 编解码、哈希、进制转换桥接。
-  - `Array` / `Dictionary`: 安全取值、防越界辅助。
+  - `Data`: 编解码、哈希、进制转换桥接。 ✅
+  - `Array` / `Dictionary`: 安全取值、防越界辅助。✅
 
 ### 3) 架构层 `XCArchitecture` (App Infrastructure)
 
