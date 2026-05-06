@@ -11,33 +11,33 @@ public enum HLAlertButtonStyle {
 
 // MARK: - Alert Action
 
-public final class HLAlertAction {
+public final class HLAlertViewAction {
     public let title: String
     public let style: HLAlertButtonStyle
-    public let handler: ((HLAlertAction) -> Void)?
+    public let handler: ((HLAlertViewAction) -> Void)?
     
     public weak var alert: HLAlert?
     
-    init(title: String, style: HLAlertButtonStyle, handler: ((HLAlertAction) -> Void)?) {
+    init(title: String, style: HLAlertButtonStyle, handler: ((HLAlertViewAction) -> Void)?) {
         self.title = title
         self.style = style
         self.handler = handler
     }
     
-    public static func `default`(_ title: String, handler: ((HLAlertAction) -> Void)? = nil) -> HLAlertAction {
-        HLAlertAction(title: title, style: .default, handler: handler)
+    public static func `default`(_ title: String, handler: ((HLAlertViewAction) -> Void)? = nil) -> HLAlertViewAction {
+        HLAlertViewAction(title: title, style: .default, handler: handler)
     }
     
-    public static func cancel(_ title: String = "取消", handler: ((HLAlertAction) -> Void)? = nil) -> HLAlertAction {
-        HLAlertAction(title: title, style: .cancel, handler: handler)
+    public static func cancel(_ title: String = "取消", handler: ((HLAlertViewAction) -> Void)? = nil) -> HLAlertViewAction {
+        HLAlertViewAction(title: title, style: .cancel, handler: handler)
     }
     
-    public static func destructive(_ title: String, handler: ((HLAlertAction) -> Void)? = nil) -> HLAlertAction {
-        HLAlertAction(title: title, style: .destructive, handler: handler)
+    public static func destructive(_ title: String, handler: ((HLAlertViewAction) -> Void)? = nil) -> HLAlertViewAction {
+        HLAlertViewAction(title: title, style: .destructive, handler: handler)
     }
     
-    public static func custom(_ title: String, color: UIColor, handler: ((HLAlertAction) -> Void)? = nil) -> HLAlertAction {
-        HLAlertAction(title: title, style: .custom(color), handler: handler)
+    public static func custom(_ title: String, color: UIColor, handler: ((HLAlertViewAction) -> Void)? = nil) -> HLAlertViewAction {
+        HLAlertViewAction(title: title, style: .custom(color), handler: handler)
     }
 }
 
@@ -48,7 +48,7 @@ public final class HLAlert {
     public let message: String?
     public var attributedTitle: NSAttributedString?
     public var attributedMessage: NSAttributedString?
-    public var actions: [HLAlertAction] = []
+    public var actions: [HLAlertViewAction] = []
     public var textFieldInstances: [UITextField] = []
     public var textFields: [UITextField] = []
     
@@ -130,7 +130,7 @@ public final class HLAlert {
     
     // MARK: - Public API
     
-    public func addAction(_ action: HLAlertAction) {
+    public func addAction(_ action: HLAlertViewAction) {
         action.alert = self
         actions.append(action)
     }
@@ -382,7 +382,7 @@ public final class HLAlert {
         }
     }
     
-    private func makeButton(for action: HLAlertAction) -> UIButton {
+    private func makeButton(for action: HLAlertViewAction) -> UIButton {
         let btn = UIButton(type: .system)
         btn.setTitle(action.title, for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
