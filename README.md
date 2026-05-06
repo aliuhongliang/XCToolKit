@@ -21,13 +21,13 @@
 
 不依赖业务，不依赖重型三方库，提供全局可复用的底层能力。
 
-- `Binary`: Hex/Byte/Data 转换（蓝牙、设备通信、协议报文）。
+- `Binary`: Hex/Byte/Data 转换（蓝牙、设备通信、协议报文）。 ✅
 - `Log`: 日志系统（文件、函数、行号、环境开关）。 ✅
-- `Regex`: 常用正则校验（手机号、邮箱、身份证、纯数字等）。
-- `Info`: 系统信息（BundleId、版本、设备、系统信息）。
-- `Language`: 国际化语言管理（手动切换、多语言读取）。
-- `Storage`: 轻量存储封装（如 UserDefaults/Keychain 抽象）。
-- `Model`: 通用模型解析、字典映射能力（可选）。
+- `Regex`: 常用正则校验（手机号、邮箱、身份证、纯数字等）。 ✅
+- `Info`: 系统信息（BundleId、版本、设备、系统信息）。 ✅
+- `Language`: 国际化语言管理（手动切换、多语言读取）。✅ 
+- `Storage`: 轻量存储封装（如 UserDefaults/Keychain 抽象）。 ✅
+- `Model`: 通用模型解析、字典映射能力（可选）。✅
 
 ### 2) 扩展层 `XCExtensions` (System Enhancements)
 
@@ -51,9 +51,9 @@
 面向业务工程的“骨架能力”，降低项目初始化成本。
 
 - `Base`: `BaseViewController` / `BaseNavigationController` / `BaseTabBarController` / `BaseWebViewController`。 ✅
-- `Permission`: 相机、相册、定位、通知等权限申请封装。
+- `Permission`: 相机、相册、定位、通知等权限申请封装。✅
 - `Theme`: 自定义主题 + 系统深浅色模式适配。
-- `Responder`: 当前顶层控制器、可见页面获取。
+- `Responder`: 当前顶层控制器、可见页面获取。✅
 - `Adapter`: 屏幕尺寸比例与安全区适配。      ✅
 - `Protocol`: 协议点击跳转、数据协议头管理。
 - `Transition`: 常见页面转场与动画管理。
@@ -62,8 +62,8 @@
 
 沉淀可直接复用的 UI 组件，强调“低业务耦合、高复用”。
 
-- `Popup`: 输入弹窗、确认弹窗、选择弹窗、气泡弹层。
-- `Toast`: 轻提示、加载中、全局状态提示。
+- `Popup`: 输入弹窗、确认弹窗、选择弹窗、气泡弹层。✅
+- `Toast`: 轻提示、加载中、全局状态提示。✅
 - `Picker`: 时间选择器、城市级联选择器等。
 - `ImagePicker`: 相机/相册/裁剪统一入口。
 - `ViewStates`: 空数据、加载中、网络异常占位页。
@@ -74,11 +74,11 @@
 把三方依赖和外部通信放在边界，控制依赖扩散。
 
 - `XCNetwork`:
-  - `Http`: Moya 二次封装（插件、Token 注入、统一错误处理）。
-  - `Socket`: WebSocket（Starscream）与 MQTT（CocoaMQTT）封装。
+  - `Http`: Moya 二次封装（插件、Token 注入、统一错误处理）。 ✅
+  - `Socket`: WebSocket（Starscream）与 MQTT（CocoaMQTT）封装。 ✅
   - 可扩展 `GCDWebServer` 等局域网能力。
 - `XCCrypto`:
-  - 基于 CryptoSwift 的 AES/MD5/RSA 等加密能力封装。
+  - 基于 CryptoSwift 的 AES/MD5/RSA 等加密能力封装。 ✅
 - `XCThird` (可选设计):
   - 集中管理 SnapKit/Kingfisher/Moya 等第三方适配器，避免业务层直接耦合具体实现。
 
