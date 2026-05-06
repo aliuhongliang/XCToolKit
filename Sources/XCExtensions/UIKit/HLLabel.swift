@@ -177,10 +177,19 @@ open class HLLabel: UILabel {
         }
         
         // 构建 TextKit 栈，container 尺寸去掉 contentInset
+        // 修复：numberOfLines 为 0 时高度不限制
+        let containerHeight = numberOfLines == 0
+            ? CGFloat.greatestFiniteMagnitude
+            : bounds.height - contentInset.top - contentInset.bottom
+
         let containerSize = CGSize(
-            width:  bounds.width  - contentInset.left - contentInset.right,
-            height: bounds.height - contentInset.top  - contentInset.bottom
+            width:  bounds.width - contentInset.left - contentInset.right,
+            height: containerHeight
         )
+//        let containerSize = CGSize(
+//            width:  bounds.width  - contentInset.left - contentInset.right,
+//            height: bounds.height - contentInset.top  - contentInset.bottom
+//        )
         let layoutManager = NSLayoutManager()
         let textContainer = NSTextContainer(size: containerSize)
         textContainer.lineFragmentPadding = 0

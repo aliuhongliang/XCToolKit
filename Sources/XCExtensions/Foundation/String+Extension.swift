@@ -360,7 +360,7 @@ public extension String {
 // MARK: ========================================
 
 public extension String {
-
+    
     /// 生成 NSAttributedString
     func attributed(
         font: UIFont = .regular(14),
@@ -369,7 +369,9 @@ public extension String {
         alignment: NSTextAlignment = .left,
         kern: CGFloat = 0,
         strikethrough: Bool = false,
-        underline: Bool = false
+        underline: Bool = false,
+        strokeColor: UIColor? = nil,   // 新增
+        strokeWidth: CGFloat = -2      // 新增
     ) -> NSAttributedString {
         var attrs: [NSAttributedString.Key: Any] = [
             .font: font,
@@ -385,6 +387,10 @@ public extension String {
         if underline {
             attrs[.underlineStyle] = NSUnderlineStyle.single.rawValue
             attrs[.underlineColor] = color
+        }
+        if let sc = strokeColor {
+            attrs[.strokeColor] = sc
+            attrs[.strokeWidth] = strokeWidth
         }
         let style = NSMutableParagraphStyle()
         style.alignment = alignment
@@ -525,6 +531,17 @@ public extension NSAttributedString {
 }
 
 public extension NSAttributedString {
+    
+    
+    func stroke(color: UIColor, width: CGFloat = -2) -> NSAttributedString {
+        let att = self.mutable
+        let range = NSRange(location: 0, length: att.length)
+        att.addAttribute(.strokeColor, value: color, range: range)
+        att.addAttribute(.strokeWidth, value: width, range: range)
+        return att
+    }
+    
+    
     /// 转换为可变版本以便内部修改
     var mutable: NSMutableAttributedString {
         return NSMutableAttributedString(attributedString: self)
