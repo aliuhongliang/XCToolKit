@@ -28,6 +28,7 @@ public enum HLSheetSelectionMode {
 
 public final class HLSheetController: HLBasePopup {
 
+    private var tableViewHeightConstraint: NSLayoutConstraint?
     // MARK: - Public Config
 
     /// 选择模式，默认单选
@@ -168,9 +169,10 @@ public final class HLSheetController: HLBasePopup {
         containerView.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        let maxHeight = UIScreen.main.bounds.height * 0.6
-        let tableHeight = tableView.heightAnchor.constraint(equalToConstant: maxHeight)
-        tableHeight.priority = .defaultHigh
+        let tableHeight = tableView.heightAnchor.constraint(equalToConstant: 200) // 初始随意
+        tableHeight.priority = .required
+        tableViewHeightConstraint = tableHeight
+        tableHeight.isActive = true
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
@@ -204,14 +206,24 @@ public final class HLSheetController: HLBasePopup {
         rightButton.setTitle(title, for: .normal)
         rightHandler = handler
     }
-
+    
     // MARK: - Show Override
-
+    
     public override func show() {
         leftButton.isHidden = leftTitle == nil
         rightButton.isHidden = rightTitle == nil
         headerView.isHidden = !hasHeader
         tableView.reloadData()
+        
+        // 动态计算高度
+        let maxHeight = UIScreen.main.bounds.height * 0.6
+        let contentHeight = CGFloat(items.count) * tableView.rowHeight
+        let headerHeight: CGFloat = hasHeader ? 52 : 0
+        let totalHeight = min(contentHeight, maxHeight)
+        
+        tableView.isScrollEnabled = contentHeight > maxHeight
+        tableViewHeightConstraint?.constant = totalHeight
+        
         super.show()
     }
 
