@@ -19,44 +19,44 @@ import UIKit
 // MARK: - 1. 判断 / 验证
 // MARK: ========================================
 
-public extension String {
-
-    /// 是否为空或全是空白字符（空格、换行、制表符）
-    var isBlank: Bool {
-        trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    /// 是否是合法国内手机号（1[3-9]xxxxxxxxx）
-    var isValidPhone: Bool {
-        matches(regex: "^1[3-9]\\d{9}$")
-    }
-
-    /// 是否是合法邮箱
-    var isValidEmail: Bool {
-        matches(regex: "^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}$")
-    }
-
-    /// 是否是合法 URL
-    var isValidURL: Bool {
-        guard let url = URL(string: self) else { return false }
-        return url.scheme != nil && url.host != nil
-    }
-
-    /// 是否是纯整数（支持负数）
-    var isPureInt: Bool {
-        matches(regex: "^-?\\d+$")
-    }
-
-    /// 是否是纯小数 / 整数（支持负数）
-    var isPureFloat: Bool {
-        matches(regex: "^-?\\d+(\\.\\d+)?$")
-    }
-
-    /// 内部正则匹配工具
-    func matches(regex: String) -> Bool {
-        range(of: regex, options: .regularExpression) != nil
-    }
-}
+//public extension String {
+//
+//    /// 是否为空或全是空白字符（空格、换行、制表符）
+//    var isBlank: Bool {
+//        trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+//    }
+//
+//    /// 是否是合法国内手机号（1[3-9]xxxxxxxxx）
+//    var isValidPhone: Bool {
+//        matches(regex: "^1[3-9]\\d{9}$")
+//    }
+//
+//    /// 是否是合法邮箱
+//    var isValidEmail: Bool {
+//        matches(regex: "^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}$")
+//    }
+//
+//    /// 是否是合法 URL
+//    var isValidURL: Bool {
+//        guard let url = URL(string: self) else { return false }
+//        return url.scheme != nil && url.host != nil
+//    }
+//
+//    /// 是否是纯整数（支持负数）
+//    var isPureInt: Bool {
+//        matches(regex: "^-?\\d+$")
+//    }
+//    
+//    /// 是否是纯小数 / 整数（支持负数）
+//    var isPureFloat: Bool {
+//        matches(regex: "^-?\\d+(\\.\\d+)?$")
+//    }
+//
+//    /// 内部正则匹配工具
+//    func matches(regex: String) -> Bool {
+//        range(of: regex, options: .regularExpression) != nil
+//    }
+//}
 
 // MARK: ========================================
 // MARK: - 2. 处理 / 转换
