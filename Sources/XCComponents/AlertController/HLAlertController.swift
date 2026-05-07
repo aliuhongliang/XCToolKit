@@ -421,7 +421,7 @@ public final class HLAlertController: HLBasePopup {
         containerView.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
         containerView.alpha = 0
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5) {
-            self.maskView.alpha = 1
+            self.hlMaskView.alpha = 1
             self.containerView.transform = .identity
             self.containerView.alpha = 1
         }
@@ -429,7 +429,7 @@ public final class HLAlertController: HLBasePopup {
 
     public override func animateOut(completion: @escaping () -> Void) {
         UIView.animate(withDuration: 0.2, animations: {
-            self.maskView.alpha = 0
+            self.hlMaskView.alpha = 0
             self.containerView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.containerView.alpha = 0
         }, completion: { _ in completion() })

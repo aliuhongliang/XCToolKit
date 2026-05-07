@@ -245,14 +245,14 @@ public final class HLSheetController: HLBasePopup {
     public override func animateIn() {
         containerView.transform = CGAffineTransform(translationX: 0, y: containerView.bounds.height + 300)
         UIView.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0) {
-            self.maskView.alpha = 1
+            self.hlMaskView.alpha = 1
             self.containerView.transform = .identity
         }
     }
 
     public override func animateOut(completion: @escaping () -> Void) {
         UIView.animate(withDuration: 0.25, animations: {
-            self.maskView.alpha = 0
+            self.hlMaskView.alpha = 0
             self.containerView.transform = CGAffineTransform(translationX: 0, y: self.containerView.bounds.height + 100)
         }, completion: { _ in completion() })
     }

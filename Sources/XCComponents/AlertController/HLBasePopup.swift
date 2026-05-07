@@ -23,7 +23,7 @@ open class HLBasePopup: UIViewController {
     // MARK: - UI
 
     /// 遮罩视图
-    public let maskView: UIView = {
+    public let hlMaskView: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         v.alpha = 0
@@ -56,17 +56,17 @@ open class HLBasePopup: UIViewController {
     // MARK: - Setup
 
     private func setupMask() {
-        view.addSubview(maskView)
-        maskView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(hlMaskView)
+        hlMaskView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            maskView.topAnchor.constraint(equalTo: view.topAnchor),
-            maskView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            maskView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            maskView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            hlMaskView.topAnchor.constraint(equalTo: view.topAnchor),
+            hlMaskView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            hlMaskView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            hlMaskView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(onMaskTapped))
-        maskView.addGestureRecognizer(tap)
+        hlMaskView.addGestureRecognizer(tap)
     }
 
     open func setupContentView() {
@@ -107,13 +107,13 @@ open class HLBasePopup: UIViewController {
 
     open func animateIn() {
         UIView.animate(withDuration: 0.25) {
-            self.maskView.alpha = 1
+            self.hlMaskView.alpha = 1
         }
     }
 
     open func animateOut(completion: @escaping () -> Void) {
         UIView.animate(withDuration: 0.2, animations: {
-            self.maskView.alpha = 0
+            self.hlMaskView.alpha = 0
         }, completion: { _ in
             completion()
         })

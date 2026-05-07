@@ -80,7 +80,7 @@ public final class HLPopoverController: HLBasePopup {
 
     public override func setupContentView() {
         // 点击空白区域关闭
-        maskView.backgroundColor = .clear
+        hlMaskView.backgroundColor = .clear
 
         view.addSubview(arrowView)
         view.addSubview(popoverContainer)
@@ -241,7 +241,7 @@ public final class HLPopoverController: HLBasePopup {
         }
 
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0) {
-            self.maskView.alpha = 1
+            self.hlMaskView.alpha = 1
             self.popoverContainer.alpha = 1
             self.popoverContainer.transform = .identity
             self.arrowView.alpha = 1
@@ -250,7 +250,7 @@ public final class HLPopoverController: HLBasePopup {
 
     public override func animateOut(completion: @escaping () -> Void) {
         UIView.animate(withDuration: 0.15, animations: {
-            self.maskView.alpha = 0
+            self.hlMaskView.alpha = 0
             self.popoverContainer.alpha = 0
             self.popoverContainer.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.arrowView.alpha = 0
