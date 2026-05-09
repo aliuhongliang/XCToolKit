@@ -73,26 +73,7 @@ public extension UIButton {
         }
         return btn
     }
- 
-    // MARK: 点击区域扩展
- 
-    /// 扩展点击区域（负值向外扩展，正值向内收缩）
-    /// 示例：button.hitTestInset = UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10)
-    var hitTestInset: UIEdgeInsets {
-        get { objc_getAssociatedObject(self, &AssociatedKeys.hitTestInset)
-                as? UIEdgeInsets ?? .zero }
-        set { objc_setAssociatedObject(self, &AssociatedKeys.hitTestInset,
-                                       newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-              // 激活 swizzle
-              _ = UIButton.swizzlePointInsideOnce
-        }
-    }
- 
-    /// 快捷设置四周相同的扩展量
-    func expandHitTest(by inset: CGFloat) {
-        hitTestInset = UIEdgeInsets(top: -inset, left: -inset,
-                                    bottom: -inset, right: -inset)
-    }
+
  
     // MARK: 防连点
  
@@ -106,32 +87,6 @@ public extension UIButton {
             guard newValue > 0 else { return }
             _ = UIButton.swizzleSendActionOnce
         }
-    }
- 
-    // MARK: Swizzle — point(inside:with:)
- 
-    fileprivate static let swizzlePointInsideOnce: Void = {
-        guard
-            let original = class_getInstanceMethod(UIButton.self,
-                           #selector(point(inside:with:))),
-            let swizzled = class_getInstanceMethod(UIButton.self,
-                           #selector(_swizzled_point(inside:with:)))
-        else { return }
-        method_exchangeImplementations(original, swizzled)
-    }()
- 
-    @objc private func _swizzled_point(inside point: CGPoint,
-                                       with event: UIEvent?) -> Bool {
-        // 隐藏、禁用、近乎透明时走系统默认逻辑，不扩展点击区域
-        if isHidden || !isEnabled || alpha < 0.01 {
-            return _swizzled_point(inside: point, with: event)
-        }
-        let inset = hitTestInset
-        guard inset != .zero else {
-            return _swizzled_point(inside: point, with: event)
-        }
-        let expanded = bounds.inset(by: inset)
-        return expanded.contains(point)
     }
  
     // MARK: Swizzle — sendAction（防连点）
@@ -168,6 +123,42 @@ public extension UIButton {
             objc_setAssociatedObject(self, &AssociatedKeys.isThrottling,
                                      false, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
+    }
+}
+
+public extension UIButton {
+    
+    // MARK: - 点击区域扩展
+    
+    private struct AssocKeys {
+        static let hitTestInset = UnsafeRawPointer(bitPattern: "UIButton.hitTestInset".hashValue)!
+    }
+    
+    /// 扩展点击区域（负值向外扩展）
+    /// 示例：button.hitTestInset = UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10)
+    var hitTestInset: UIEdgeInsets {
+        get {
+            objc_getAssociatedObject(self, AssocKeys.hitTestInset) as? UIEdgeInsets ?? .zero
+        }
+        set {
+            objc_setAssociatedObject(self, AssocKeys.hitTestInset, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    /// 快捷设置四周相同扩展量
+    func expandHitTest(by inset: CGFloat) {
+        hitTestInset = UIEdgeInsets(top: -inset, left: -inset, bottom: -inset, right: -inset)
+    }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        guard hitTestInset != .zero,
+              !isHidden,
+              isEnabled,
+              alpha >= 0.01
+        else {
+            return super.point(inside: point, with: event)
+        }
+        return bounds.inset(by: hitTestInset).contains(point)
     }
 }
  

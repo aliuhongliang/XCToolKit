@@ -143,14 +143,12 @@ public final class HLPopoverController: HLBasePopup {
     private func calculateContentSize() -> CGSize {
         switch mode {
         case .list(let items):
-            let maxWidth: CGFloat = 200  // 最大宽度限制
-            let minWidth: CGFloat = popoverWidth
             let padding: CGFloat = 24   // 左右各 12
 
             // 计算最长文字需要的宽度
             let maxTextWidth = items.map { text -> CGFloat in
                 let size = (text as NSString).boundingRect(
-                    with: CGSize(width: maxWidth - padding, height: .greatestFiniteMagnitude),
+                    with: CGSize(width: popoverWidth - padding, height: .greatestFiniteMagnitude),
                     options: [.usesLineFragmentOrigin, .usesFontLeading],
                     attributes: [.font: UIFont.systemFont(ofSize: 14)],
                     context: nil
@@ -158,13 +156,11 @@ public final class HLPopoverController: HLBasePopup {
                 return ceil(size.width)
             }.max() ?? 0
 
-            let width = min(max(maxTextWidth + padding, minWidth), maxWidth)
-
             // 计算每行实际高度（支持换行）
-            let totalHeight = items.reduce(0) { $0 + rowHeight(for: $1, width: width) }
+            let totalHeight = items.reduce(0) { $0 + rowHeight(for: $1, width: popoverWidth) }
             let finalHeight = min(totalHeight, maxPopoverHeight)
             
-            return CGSize(width: width, height: finalHeight)
+            return CGSize(width: popoverWidth, height: finalHeight)
 
         case .custom(_, let size):
             return size

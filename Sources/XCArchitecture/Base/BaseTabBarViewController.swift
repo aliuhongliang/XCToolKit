@@ -58,10 +58,10 @@ public extension UITabBar {
     func xc_setupColors(normal: UIColor, selected: UIColor) {
         if #available(iOS 13.0, *) {
             let appearance = self.standardAppearance
-            appearance.stackedLayoutAppearance.selected.iconColor = selected
+//            appearance.stackedLayoutAppearance.selected.iconColor = selected
             appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: selected]
             
-            appearance.stackedLayoutAppearance.normal.iconColor = normal
+//            appearance.stackedLayoutAppearance.normal.iconColor = normal
             appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: normal]
             
             self.standardAppearance = appearance
@@ -74,8 +74,8 @@ public extension UITabBar {
         }
         
 //        items?.forEach { item in
-//            item.image = item.image?.withRenderingMode(.alwaysTemplate)
-//            item.selectedImage = item.selectedImage?.withRenderingMode(.alwaysTemplate)
+//            item.image = item.image?.withRenderingMode(.alwaysOriginal)
+//            item.selectedImage = item.selectedImage?.withRenderingMode(.alwaysOriginal)
 //        }
     }
 }

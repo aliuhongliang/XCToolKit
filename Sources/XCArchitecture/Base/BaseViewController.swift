@@ -410,7 +410,7 @@ public extension CustomNavigationBar {
     /// 设置默认返回按钮（自动判断 pop / dismiss）
     func setBackButton(
         image: UIImage? = UIImage(systemName: "chevron.left"),
-        tintColor: UIColor = .black,
+        tintColor: UIColor? = nil,
         target: UIViewController
     ) {
         let btn = makeButton(image: image, tintColor: tintColor,
@@ -502,7 +502,7 @@ public extension CustomNavigationBar {
  
     private func makeButton(
         image: UIImage?,
-        tintColor: UIColor,
+        tintColor: UIColor?,
         target: Any,
         action: Selector
     ) -> UIButton {
