@@ -150,7 +150,7 @@ private let kRpxRatio: CGFloat = DeviceScreen.width / kDesignWidth
 
 // MARK: Int
 
-extension Int {
+public extension Int {
     
     /// 按设计稿比例换算为当前屏幕的 CGFloat（pt）
     /// 用法：16.rpx
@@ -170,7 +170,7 @@ extension Int {
 
 // MARK: Double
 
-extension Double {
+public extension Double {
     
     var rpx: CGFloat {
         CGFloat(self) * kRpxRatio
@@ -187,7 +187,7 @@ extension Double {
 
 // MARK: Float
 
-extension Float {
+public extension Float {
     
     var rpx: CGFloat {
         CGFloat(self) * kRpxRatio
@@ -204,7 +204,7 @@ extension Float {
 
 // MARK: CGFloat
 
-extension CGFloat {
+public extension CGFloat {
     
     var rpx: CGFloat {
         self * kRpxRatio

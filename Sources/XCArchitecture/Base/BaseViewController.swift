@@ -216,18 +216,6 @@ extension BaseViewController {
     
     // MARK: 私有 — 应用系统导航栏外观
     private func applySystemNavigationBarAppearance() {
-//        if #available(iOS 15.0, *) {
-//            let appearance = currentNavigationBarAppearance()
-//            appearance.backgroundColor = navigationBarColor
-//            appearance.shadowColor = .clear
-//            appearance.backgroundEffect = nil
-//            appearance.shadowColor = nil
-//            applyAppearance(appearance)
-//        } else {
-//            let image = UIImage(color: navigationBarColor)
-//            navigationController?.navigationBar.setBackgroundImage(image, for: .default)
-//            navigationController?.navigationBar.shadowImage = image
-//        }
         guard let nav = navigationController else { return }
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
@@ -266,16 +254,6 @@ extension BaseViewController {
             )
         ])
     }
- 
-//    private func safeAreaTopInset() -> CGFloat {
-//        if #available(iOS 13.0, *) {
-//            return view.window?.safeAreaInsets.top
-//                ?? UIApplication.shared.windows.first?.safeAreaInsets.top
-//                ?? 44
-//        } else {
-//            return UIApplication.shared.statusBarFrame.height
-//        }
-//    }
 }
  
 

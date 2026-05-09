@@ -110,22 +110,29 @@ open class HLButton: UIButton {
     }
  
     open override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let imageSize  = imageView?.intrinsicContentSize  ?? .zero
-        let titleSize  = titleLabel?.intrinsicContentSize ?? .zero
-        let spacing    = (imageSize == .zero || titleSize == .zero) ? 0 : imageSpacing
- 
+        let imageSize = imageView?.intrinsicContentSize ?? .zero
+        let titleSize = titleLabel?.intrinsicContentSize ?? .zero
+        let spacing = (imageSize == .zero || titleSize == .zero) ? 0 : imageSpacing
+        
+        // 加上 contentEdgeInsets（如果有设置的话）
+        let insets = contentEdgeInsets
+
         switch imagePosition {
         case .left, .right:
             return CGSize(
-                width:  imageSize.width + spacing + titleSize.width,
-                height: max(imageSize.height, titleSize.height)
+                width:  imageSize.width + spacing + titleSize.width + insets.left + insets.right,
+                height: max(imageSize.height, titleSize.height) + insets.top + insets.bottom
             )
         case .top, .bottom:
             return CGSize(
-                width:  max(imageSize.width, titleSize.width),
-                height: imageSize.height + spacing + titleSize.height
+                width:  max(imageSize.width, titleSize.width) + insets.left + insets.right,
+                height: imageSize.height + spacing + titleSize.height + insets.top + insets.bottom
             )
         }
+    }
+
+    open override var intrinsicContentSize: CGSize {
+        sizeThatFits(.zero)
     }
  
     private func layoutImageAndTitle() {

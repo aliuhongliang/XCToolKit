@@ -21,12 +21,15 @@ import UIKit
 public final class HLPopoverController: HLBasePopup {
 
     // MARK: - Public Config
+    
+    public var defaultSelectedIndex: Int = -1
 
     /// 列表选中回调
     public var onSelect: ((Int) -> Void)?
 
     /// Popover 宽度，默认 160
     public var popoverWidth: CGFloat = 160
+    public var maxPopoverHeight: CGFloat = UIScreen.main.bounds.height * 0.3
 
     /// 每行高度，默认 44
     public var itemHeight: CGFloat = 44
@@ -73,6 +76,7 @@ public final class HLPopoverController: HLBasePopup {
         t.isScrollEnabled = false
         t.layer.cornerRadius = 10
         t.layer.masksToBounds = true
+        t.contentInsetAdjustmentBehavior = .never
         return t
     }()
 
@@ -139,10 +143,43 @@ public final class HLPopoverController: HLBasePopup {
     private func calculateContentSize() -> CGSize {
         switch mode {
         case .list(let items):
-            return CGSize(width: popoverWidth, height: CGFloat(items.count) * itemHeight)
+            let maxWidth: CGFloat = 200  // 最大宽度限制
+            let minWidth: CGFloat = popoverWidth
+            let padding: CGFloat = 24   // 左右各 12
+
+            // 计算最长文字需要的宽度
+            let maxTextWidth = items.map { text -> CGFloat in
+                let size = (text as NSString).boundingRect(
+                    with: CGSize(width: maxWidth - padding, height: .greatestFiniteMagnitude),
+                    options: [.usesLineFragmentOrigin, .usesFontLeading],
+                    attributes: [.font: UIFont.systemFont(ofSize: 14)],
+                    context: nil
+                )
+                return ceil(size.width)
+            }.max() ?? 0
+
+            let width = min(max(maxTextWidth + padding, minWidth), maxWidth)
+
+            // 计算每行实际高度（支持换行）
+            let totalHeight = items.reduce(0) { $0 + rowHeight(for: $1, width: width) }
+            let finalHeight = min(totalHeight, maxPopoverHeight)
+            
+            return CGSize(width: width, height: finalHeight)
+
         case .custom(_, let size):
             return size
         }
+    }
+    
+    private func rowHeight(for text: String, width: CGFloat) -> CGFloat {
+        let padding: CGFloat = 24
+        let size = (text as NSString).boundingRect(
+            with: CGSize(width: width - padding, height: .greatestFiniteMagnitude),
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: UIFont.systemFont(ofSize: 14)],
+            context: nil
+        )
+        return max(ceil(size.height) + 20, itemHeight)
     }
 
     private func layoutPopover() {
@@ -207,10 +244,13 @@ public final class HLPopoverController: HLBasePopup {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.register(HLPopoverCell.self, forCellReuseIdentifier: HLPopoverCell.reuseID)
-            tableView.rowHeight = itemHeight
+            tableView.estimatedRowHeight = itemHeight
             tableView.frame = CGRect(origin: .zero, size: contentSize)
             popoverContainer.addSubview(tableView)
-
+            
+            let totalHeight = items.reduce(0) { $0 + rowHeight(for: $1, width: contentSize.width) }
+            tableView.isScrollEnabled = totalHeight > maxPopoverHeight
+            
         case .custom(let customView, let size):
             customView.frame = CGRect(origin: .zero, size: size)
             customView.layer.cornerRadius = 10
@@ -225,7 +265,6 @@ public final class HLPopoverController: HLBasePopup {
         layoutPopover()
 
         popoverContainer.alpha = 0
-        popoverContainer.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
         arrowView.alpha = 0
 
         // 设置缩放锚点
@@ -243,7 +282,6 @@ public final class HLPopoverController: HLBasePopup {
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0) {
             self.hlMaskView.alpha = 1
             self.popoverContainer.alpha = 1
-            self.popoverContainer.transform = .identity
             self.arrowView.alpha = 1
         }
     }
@@ -252,7 +290,6 @@ public final class HLPopoverController: HLBasePopup {
         UIView.animate(withDuration: 0.15, animations: {
             self.hlMaskView.alpha = 0
             self.popoverContainer.alpha = 0
-            self.popoverContainer.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.arrowView.alpha = 0
         }, completion: { _ in completion() })
     }
@@ -277,9 +314,20 @@ extension HLPopoverController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: HLPopoverCell.reuseID, for: indexPath) as! HLPopoverCell
         if case .list(let items) = mode {
             let isLast = indexPath.row == items.count - 1
-            cell.configure(title: items[indexPath.row], showSeparator: !isLast)
+            let isSelected = indexPath.row == defaultSelectedIndex
+            cell.configure(title: items[indexPath.row], showSeparator: !isLast, isSelected: isSelected)
         }
         return cell
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 53
+        
+        if case .list(let items) = mode {
+            return rowHeight(for: items[indexPath.row], width: calculateContentSize().width)
+        }
+        return itemHeight
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -300,6 +348,7 @@ private final class HLPopoverCell: UITableViewCell {
         l.font = .systemFont(ofSize: 14)
         l.textColor = .black
         l.textAlignment = .center
+        l.numberOfLines = 0
         return l
     }()
 
@@ -334,9 +383,12 @@ private final class HLPopoverCell: UITableViewCell {
 
     required init?(coder: NSCoder) { fatalError() }
 
-    func configure(title: String, showSeparator: Bool) {
+    
+    func configure(title: String, showSeparator: Bool, isSelected: Bool) {
         titleLabel.text = title
         separator.isHidden = !showSeparator
+        backgroundColor = isSelected ? UIColor.systemBlue.withAlphaComponent(0.12) : .white
+        titleLabel.textColor = isSelected ? .systemBlue : .black
     }
 }
 

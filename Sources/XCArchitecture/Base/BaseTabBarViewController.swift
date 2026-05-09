@@ -16,18 +16,19 @@ open class BaseTabBarViewController: UITabBarController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        if #available(iOS 15.0, *) {
+        if #available(iOS 13.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithTransparentBackground()
-            
-            appearance.backgroundColor = UIColor(hex: "#ffff00")
+            appearance.backgroundColor = UIColor(hex: "#ffffff")
             tabBar.standardAppearance = appearance
-            tabBar.scrollEdgeAppearance = appearance
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = appearance
+            }
         }
         
-//        self.tabBar.tintColor = UIColor(hex: "#D1FF00");
-//        self.tabBar.unselectedItemTintColor = UIColor(hex: "#A8A8A8");
-        self.tabBar.isTranslucent = false
+        if #unavailable(iOS 26.0) {
+            self.tabBar.isTranslucent = false
+        }
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -56,11 +57,12 @@ public extension UITabBar {
      
     func xc_setupColors(normal: UIColor, selected: UIColor) {
         if #available(iOS 13.0, *) {
-            let appearance = UITabBarAppearance()
-            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: normal]
-            appearance.stackedLayoutAppearance.normal.iconColor = normal
-            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: selected]
+            let appearance = self.standardAppearance
             appearance.stackedLayoutAppearance.selected.iconColor = selected
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: selected]
+            
+            appearance.stackedLayoutAppearance.normal.iconColor = normal
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: normal]
             
             self.standardAppearance = appearance
             if #available(iOS 15.0, *) {
@@ -70,5 +72,10 @@ public extension UITabBar {
             self.tintColor = selected
             self.unselectedItemTintColor = normal
         }
+        
+//        items?.forEach { item in
+//            item.image = item.image?.withRenderingMode(.alwaysTemplate)
+//            item.selectedImage = item.selectedImage?.withRenderingMode(.alwaysTemplate)
+//        }
     }
 }
